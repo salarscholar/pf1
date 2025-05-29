@@ -519,6 +519,22 @@ const HomePage = ({ phones, onPhoneClick, onCategoryClick }) => {
         </div>
       </div>
 
+      {/* Search Bar */}
+      <div className="mx-4">
+        <button 
+          onClick={() => window.dispatchEvent(new CustomEvent('navigate-to-search'))}
+          className="w-full bg-white p-4 rounded-2xl shadow-sm border border-slate-200 flex items-center gap-3 hover:shadow-lg transition-all text-left"
+        >
+          <div className="text-slate-400">
+            {Icons.search}
+          </div>
+          <span className="text-slate-500 flex-1">Search phones, brands, models...</span>
+          <div className="bg-slate-100 px-3 py-1 rounded-lg text-xs text-slate-600 font-medium">
+            Search
+          </div>
+        </button>
+      </div>
+
       {/* Quick Stats */}
       <div className="mx-4">
         <div className="grid grid-cols-3 gap-4">
