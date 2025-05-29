@@ -222,6 +222,7 @@ function App() {
               setFilters({...filters, brand});
               setCurrentPage('search');
             }}
+            onSearchClick={() => setCurrentPage('search')}
           />
         );
       case 'search':
@@ -240,9 +241,19 @@ function App() {
       case 'profile':
         return <ProfilePage phones={phoneListings.slice(0, 3)} onPhoneClick={setSelectedPhone} />;
       default:
-        return <HomePage phones={phoneListings.slice(0, 6)} onPhoneClick={setSelectedPhone} />;
+        return <HomePage phones={phoneListings.slice(0, 6)} onPhoneClick={setSelectedPhone} onSearchClick={() => setCurrentPage('search')} />;
     }
   };
+
+  // Handle search navigation from homepage
+  React.useEffect(() => {
+    const handleSearchNavigation = () => {
+      setCurrentPage('search');
+    };
+    
+    window.addEventListener('navigate-to-search', handleSearchNavigation);
+    return () => window.removeEventListener('navigate-to-search', handleSearchNavigation);
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-50 max-w-md mx-auto relative">
