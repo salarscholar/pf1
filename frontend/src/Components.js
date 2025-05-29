@@ -589,10 +589,148 @@ const HomePage = ({ phones, onPhoneClick, onCategoryClick }) => {
 
 // Search Page Component
 const SearchPage = ({ phones, onPhoneClick, searchQuery, setSearchQuery, onFilterClick, filters }) => {
-  const activeFiltersCount = Object.values(filters).filter(f => f !== 'All').length;
+  const [activeFiltersCount, setActiveFiltersCount] = useState(0);
+  const [showResults, setShowResults] = useState(false);
+  const [recentSearches, setRecentSearches] = useState([
+    'iPhone 15 Pro Max', 'Samsung Galaxy S24', 'Oppo Reno 12', 'Realme GT 6', 'Xiaomi 14 Ultra'
+  ]);
+
+  const handleSearch = () => {
+    if (searchQuery.trim()) {
+      setShowResults(true);
+      // Add to recent searches if not already there
+      if (!recentSearches.includes(searchQuery)) {
+        setRecentSearches([searchQuery, ...recentSearches.slice(0, 4)]);
+      }
+    }
+  };
+
+  const handleQuickSearch = (query) => {
+    setSearchQuery(query);
+    setShowResults(true);
+  };
+
+  const clearSearch = () => {
+    setSearchQuery('');
+    setShowResults(false);
+  };
+
+  // Popular search categories
+  const searchCategories = [
+    {
+      title: 'Search by Brand',
+      icon: '📱',
+      items: [
+        { name: 'iPhone', count: '450+ phones', color: 'from-slate-500 to-slate-700' },
+        { name: 'Samsung', count: '320+ phones', color: 'from-blue-500 to-blue-700' },
+        { name: 'Oppo', count: '180+ phones', color: 'from-green-500 to-green-700' },
+        { name: 'Vivo', count: '165+ phones', color: 'from-purple-500 to-purple-700' },
+        { name: 'Realme', count: '140+ phones', color: 'from-yellow-500 to-orange-600' },
+        { name: 'Xiaomi', count: '95+ phones', color: 'from-orange-500 to-red-600' }
+      ]
+    },
+    {
+      title: 'Search by Price Range',
+      icon: '💰',
+      items: [
+        { name: 'Under ₨50k', count: '280+ phones', color: 'from-emerald-500 to-teal-600' },
+        { name: '₨50k - ₨100k', count: '350+ phones', color: 'from-blue-500 to-cyan-600' },
+        { name: '₨100k - ₨200k', count: '240+ phones', color: 'from-indigo-500 to-purple-600' },
+        { name: '₨200k - ₨300k', count: '120+ phones', color: 'from-purple-500 to-pink-600' },
+        { name: 'Above ₨300k', count: '85+ phones', color: 'from-rose-500 to-red-600' }
+      ]
+    },
+    {
+      title: 'Search by Features',
+      icon: '⚡',
+      items: [
+        { name: 'Gaming Phones', count: '75+ phones', color: 'from-red-500 to-orange-600' },
+        { name: 'Camera Pro', count: '120+ phones', color: 'from-purple-500 to-indigo-600' },
+        { name: 'Fast Charging', count: '200+ phones', color: 'from-yellow-500 to-orange-600' },
+        { name: 'Wireless Charging', count: '90+ phones', color: 'from-blue-500 to-purple-600' },
+        { name: '5G Ready', count: '180+ phones', color: 'from-green-500 to-blue-600' },
+        { name: 'Long Battery', count: '160+ phones', color: 'from-emerald-500 to-green-600' }
+      ]
+    }
+  ];
+
+  const quickFilters = [
+    { label: 'New Phones', icon: '✨', color: 'bg-emerald-500' },
+    { label: 'Under Warranty', icon: '🛡️', color: 'bg-blue-500' },
+    { label: 'PTA Approved', icon: '✅', color: 'bg-green-500' },
+    { label: 'With Box', icon: '📦', color: 'bg-purple-500' },
+    { label: 'Exchange OK', icon: '🔄', color: 'bg-orange-500' },
+    { label: 'Urgent Sale', icon: '⚡', color: 'bg-red-500' }
+  ];
+
+  const popularSearches = [
+    'iPhone 15 Pro Max 256GB', 'Samsung S24 Ultra', 'Oppo Reno 12 Pro', 
+    'iPhone 14 Plus', 'Realme GT 6', 'Vivo V30 Pro', 'Xiaomi 14 Ultra',
+    'OnePlus 12', 'Samsung A54 5G', 'iPhone 13 Pro'
+  ];
+
+  const searchSuggestions = [
+    { text: 'iPhone 15 Pro Max Natural Titanium', type: 'Exact Model' },
+    { text: 'Samsung Galaxy S24 Ultra 512GB', type: 'Storage Specific' },
+    { text: 'Gaming phones under 100k', type: 'Category + Price' },
+    { text: 'Oppo camera phone 2024 model', type: 'Feature + Brand' },
+    { text: 'PTA approved iPhone Karachi', type: 'Verified + Location' }
+  ];
+
+  if (showResults) {
+    return (
+      <div className="space-y-4 bg-slate-50 min-h-screen">
+        {/* Search Bar with Results */}
+        <div className="p-4 bg-white border-b border-slate-200">
+          <div className="flex gap-3 mb-3">
+            <div className="flex-1 relative">
+              <input
+                type="text"
+                placeholder="Search phones, brands, models..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full p-4 border border-slate-300 rounded-2xl pl-12 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+              />
+              <div className="absolute left-4 top-4 text-slate-400">
+                {Icons.search}
+              </div>
+            </div>
+            <button 
+              onClick={clearSearch}
+              className="p-4 border border-slate-300 rounded-2xl hover:bg-slate-50 transition-colors"
+            >
+              {Icons.close}
+            </button>
+          </div>
+          <div className="flex gap-2">
+            <button 
+              onClick={onFilterClick}
+              className="px-4 py-2 bg-blue-600 text-white rounded-xl font-medium text-sm flex items-center gap-2"
+            >
+              {Icons.filter}
+              Filters
+            </button>
+            <div className="text-sm text-slate-600 flex items-center">
+              {phones.length} results for "{searchQuery}"
+            </div>
+          </div>
+        </div>
+
+        {/* Results */}
+        <div className="px-4 pb-8">
+          <div className="grid grid-cols-2 gap-4">
+            {phones.map(phone => (
+              <PhoneCard key={phone.id} phone={phone} onClick={onPhoneClick} />
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="space-y-4 bg-slate-50 min-h-screen">
+    <div className="space-y-6 bg-slate-50 min-h-screen">
       {/* Search Bar */}
       <div className="p-4 bg-white border-b border-slate-200">
         <div className="flex gap-3">
@@ -603,52 +741,174 @@ const SearchPage = ({ phones, onPhoneClick, searchQuery, setSearchQuery, onFilte
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full p-4 border border-slate-300 rounded-2xl pl-12 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+              onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
             />
             <div className="absolute left-4 top-4 text-slate-400">
               {Icons.search}
             </div>
           </div>
           <button 
-            onClick={onFilterClick}
-            className="p-4 border border-slate-300 rounded-2xl relative hover:bg-slate-50 transition-colors"
+            onClick={handleSearch}
+            disabled={!searchQuery.trim()}
+            className="px-6 py-4 bg-blue-600 text-white rounded-2xl font-semibold disabled:bg-slate-300 disabled:cursor-not-allowed hover:bg-blue-700 transition-colors"
           >
-            {Icons.filter}
-            {activeFiltersCount > 0 && (
-              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-6 h-6 rounded-full flex items-center justify-center font-medium">
-                {activeFiltersCount}
-              </span>
-            )}
+            Search
           </button>
         </div>
       </div>
 
-      {/* Results */}
-      <div className="px-4">
-        <div className="flex justify-between items-center mb-6">
-          <h3 className="text-xl font-bold text-slate-800">{phones.length} phones found</h3>
-          <select className="text-sm border border-slate-300 rounded-xl px-4 py-2 bg-white focus:ring-2 focus:ring-blue-500">
-            <option>Sort by: Latest</option>
-            <option>Price: Low to High</option>
-            <option>Price: High to Low</option>
-            <option>Most Popular</option>
-          </select>
+      {/* Recent Searches */}
+      {recentSearches.length > 0 && (
+        <div className="px-4">
+          <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-200">
+            <h3 className="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
+              🕒 Recent Searches
+            </h3>
+            <div className="flex flex-wrap gap-2">
+              {recentSearches.map((search, index) => (
+                <button
+                  key={index}
+                  onClick={() => handleQuickSearch(search)}
+                  className="bg-slate-100 hover:bg-blue-100 px-3 py-2 rounded-xl text-sm text-slate-700 hover:text-blue-700 transition-colors"
+                >
+                  {search}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
+      )}
 
-        {phones.length > 0 ? (
-          <div className="grid grid-cols-2 gap-4 pb-8">
-            {phones.map(phone => (
-              <PhoneCard key={phone.id} phone={phone} onClick={onPhoneClick} />
+      {/* Quick Filters */}
+      <div className="px-4">
+        <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-200">
+          <h3 className="text-lg font-bold text-slate-800 mb-4">Quick Filters</h3>
+          <div className="grid grid-cols-2 gap-3">
+            {quickFilters.map((filter, index) => (
+              <button
+                key={index}
+                className="flex items-center gap-3 p-3 bg-slate-50 hover:bg-slate-100 rounded-2xl transition-colors"
+              >
+                <div className={`w-8 h-8 ${filter.color} rounded-lg flex items-center justify-center text-white text-sm`}>
+                  {filter.icon}
+                </div>
+                <span className="font-medium text-slate-800 text-sm">{filter.label}</span>
+              </button>
             ))}
           </div>
-        ) : (
-          <div className="text-center py-16 text-slate-500">
-            <div className="w-24 h-24 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-6">
-              {Icons.search}
+        </div>
+      </div>
+
+      {/* Search Categories */}
+      {searchCategories.map((category, categoryIndex) => (
+        <div key={categoryIndex} className="px-4">
+          <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-200">
+            <h3 className="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
+              {category.icon} {category.title}
+            </h3>
+            <div className="grid grid-cols-2 gap-3">
+              {category.items.map((item, index) => (
+                <button
+                  key={index}
+                  onClick={() => handleQuickSearch(item.name)}
+                  className="bg-slate-50 hover:bg-slate-100 p-4 rounded-2xl text-left transition-all hover:shadow-md"
+                >
+                  <div className={`w-12 h-12 bg-gradient-to-br ${item.color} rounded-xl flex items-center justify-center text-white font-bold text-lg mb-3 shadow-lg`}>
+                    {item.name.charAt(0)}
+                  </div>
+                  <div className="font-bold text-slate-800 text-sm mb-1">{item.name}</div>
+                  <div className="text-xs text-slate-600">{item.count}</div>
+                </button>
+              ))}
             </div>
-            <h3 className="text-xl font-bold mb-2 text-slate-800">No phones found</h3>
-            <p className="text-sm">Try adjusting your search or filters</p>
           </div>
-        )}
+        </div>
+      ))}
+
+      {/* Popular Searches */}
+      <div className="px-4">
+        <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-200">
+          <h3 className="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
+            🔥 Trending Searches
+          </h3>
+          <div className="space-y-3">
+            {popularSearches.map((search, index) => (
+              <button
+                key={index}
+                onClick={() => handleQuickSearch(search)}
+                className="w-full flex items-center justify-between p-3 bg-slate-50 hover:bg-blue-50 rounded-2xl transition-colors text-left"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">
+                    {index + 1}
+                  </div>
+                  <span className="font-medium text-slate-800 text-sm">{search}</span>
+                </div>
+                <svg className="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Search Suggestions */}
+      <div className="px-4">
+        <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-200">
+          <h3 className="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
+            💡 Search Like a Pro
+          </h3>
+          <div className="space-y-3">
+            {searchSuggestions.map((suggestion, index) => (
+              <button
+                key={index}
+                onClick={() => handleQuickSearch(suggestion.text)}
+                className="w-full p-4 bg-gradient-to-r from-slate-50 to-slate-100 hover:from-blue-50 hover:to-indigo-50 rounded-2xl transition-all text-left border border-slate-200"
+              >
+                <div className="flex justify-between items-start mb-2">
+                  <span className="font-medium text-slate-800 text-sm">{suggestion.text}</span>
+                  <span className="bg-blue-100 text-blue-700 px-2 py-1 rounded-lg text-xs font-medium">
+                    {suggestion.type}
+                  </span>
+                </div>
+                <div className="text-xs text-slate-600">Try this search pattern for better results</div>
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Search Tips */}
+      <div className="px-4 pb-8">
+        <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-3xl p-6 border border-blue-200">
+          <h3 className="text-lg font-bold text-blue-800 mb-4 flex items-center gap-2">
+            🎯 Search Tips
+          </h3>
+          <div className="space-y-3 text-sm">
+            <div className="flex items-start gap-3">
+              <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center text-white text-xs font-bold">1</div>
+              <div>
+                <div className="font-semibold text-blue-800">Be Specific</div>
+                <div className="text-blue-700">Include model, storage, and condition for exact matches</div>
+              </div>
+            </div>
+            <div className="flex items-start gap-3">
+              <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center text-white text-xs font-bold">2</div>
+              <div>
+                <div className="font-semibold text-blue-800">Use Filters</div>
+                <div className="text-blue-700">Combine search with price range and condition filters</div>
+              </div>
+            </div>
+            <div className="flex items-start gap-3">
+              <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center text-white text-xs font-bold">3</div>
+              <div>
+                <div className="font-semibold text-blue-800">Try Variations</div>
+                <div className="text-blue-700">Search "iPhone 15" or "iPhone 15 Pro" for different results</div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
