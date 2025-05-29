@@ -186,7 +186,7 @@ function App() {
   const brands = ['All', 'Apple', 'Samsung', 'Oppo', 'Vivo', 'Realme', 'Xiaomi', 'OnePlus', 'Tecno'];
   const priceRanges = ['All', 'Under 50k', '50k-100k', '100k-200k', '200k-300k', 'Above 300k'];
   const conditions = ['All', 'New', 'Like New', 'Excellent', 'Good', 'Fair'];
-  const storageOptions = ['All', '64GB', '128GB', 256GB', '512GB', '1TB'];
+  const storageOptions = ['All', '64GB', '128GB', '256GB', '512GB', '1TB'];
 
   const filteredPhones = phoneListings.filter(phone => {
     const matchesSearch = phone.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
