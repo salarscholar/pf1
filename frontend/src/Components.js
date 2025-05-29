@@ -262,6 +262,246 @@ const CategoryGrid = ({ onCategoryClick }) => {
   );
 };
 
+// Recent Listings Component
+const RecentListings = ({ phones, onPhoneClick }) => {
+  const recentPhones = [
+    {
+      id: 'r1',
+      title: 'iPhone 14 Plus',
+      brand: 'Apple',
+      price: 265000,
+      condition: 'Excellent',
+      storage: '128GB',
+      color: 'Purple',
+      location: 'Gulberg, Lahore',
+      images: ['https://images.unsplash.com/photo-1678685888221-cda773a3dcdb'],
+      posted: '15 min ago',
+      isNew: true
+    },
+    {
+      id: 'r2',
+      title: 'Samsung Galaxy A54',
+      brand: 'Samsung',
+      price: 89000,
+      condition: 'Like New',
+      storage: '256GB',
+      color: 'Awesome Lime',
+      location: 'Defence, Karachi',
+      images: ['https://images.unsplash.com/photo-1610792516307-7e22b020107e'],
+      posted: '28 min ago',
+      isNew: true
+    },
+    {
+      id: 'r3',
+      title: 'OnePlus 12',
+      brand: 'OnePlus',
+      price: 195000,
+      condition: 'New',
+      storage: '256GB',
+      color: 'Silky Black',
+      location: 'F-11, Islamabad',
+      images: ['https://images.unsplash.com/photo-1565849904461-04a58ad377e0'],
+      posted: '1 hour ago',
+      isNew: false
+    }
+  ];
+
+  return (
+    <div className="bg-white mx-4 rounded-3xl shadow-sm border border-slate-200 overflow-hidden">
+      <div className="p-6 pb-4 flex justify-between items-center">
+        <div>
+          <h3 className="text-xl font-bold text-slate-800 mb-1">Recent Listings</h3>
+          <p className="text-sm text-slate-600">Fresh phones just posted</p>
+        </div>
+        <button className="text-sm text-blue-600 font-semibold">View All</button>
+      </div>
+      <div className="px-6 pb-6">
+        <div className="space-y-4">
+          {recentPhones.map(phone => (
+            <div 
+              key={phone.id}
+              onClick={() => onPhoneClick(phone)}
+              className="flex gap-3 p-3 rounded-2xl border border-slate-100 hover:bg-slate-50 hover:shadow-md transition-all cursor-pointer"
+            >
+              <img src={phone.images[0]} alt={phone.title} className="w-16 h-16 rounded-xl object-cover" />
+              <div className="flex-1 min-w-0">
+                <div className="flex items-start justify-between mb-1">
+                  <h4 className="font-bold text-sm text-slate-800 truncate">{phone.title}</h4>
+                  {phone.isNew && (
+                    <span className="bg-red-500 text-white text-xs px-2 py-1 rounded-full font-medium flex-shrink-0 ml-2">NEW</span>
+                  )}
+                </div>
+                <p className="text-lg font-bold text-slate-900 mb-1">₨ {phone.price.toLocaleString()}</p>
+                <div className="flex items-center gap-2 text-xs text-slate-600">
+                  <span className="bg-green-100 text-green-700 px-2 py-1 rounded">{phone.condition}</span>
+                  <span>•</span>
+                  <span>{phone.posted}</span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Featured Shops Component
+const FeaturedShops = () => {
+  const shops = [
+    {
+      id: 's1',
+      name: 'TechHub Karachi',
+      rating: 4.9,
+      reviews: 324,
+      specializes: 'Premium iPhones',
+      location: 'Saddar, Karachi',
+      verified: true,
+      phones: 45,
+      avatar: 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43',
+      gradient: 'from-blue-500 to-indigo-600'
+    },
+    {
+      id: 's2',
+      name: 'Mobile Palace',
+      rating: 4.8,
+      reviews: 218,
+      specializes: 'Samsung Galaxy',
+      location: 'Mall Road, Lahore',
+      verified: true,
+      phones: 67,
+      avatar: 'https://images.unsplash.com/photo-1556742393-d75f468bfcb0',
+      gradient: 'from-emerald-500 to-teal-600'
+    },
+    {
+      id: 's3',
+      name: 'Smart Devices',
+      rating: 4.7,
+      reviews: 156,
+      specializes: 'Budget Phones',
+      location: 'Blue Area, Islamabad',
+      verified: true,
+      phones: 89,
+      avatar: 'https://images.unsplash.com/photo-1560472355-536de3962603',
+      gradient: 'from-purple-500 to-pink-600'
+    }
+  ];
+
+  return (
+    <div className="bg-white mx-4 rounded-3xl shadow-sm border border-slate-200 overflow-hidden">
+      <div className="p-6 pb-4 flex justify-between items-center">
+        <div>
+          <h3 className="text-xl font-bold text-slate-800 mb-1">Featured Shops</h3>
+          <p className="text-sm text-slate-600">Trusted verified sellers</p>
+        </div>
+        <button className="text-sm text-blue-600 font-semibold">View All</button>
+      </div>
+      <div className="px-6 pb-6">
+        <div className="space-y-4">
+          {shops.map(shop => (
+            <div 
+              key={shop.id}
+              className="bg-gradient-to-r from-slate-50 to-slate-100 p-4 rounded-2xl border border-slate-200 hover:shadow-lg transition-all cursor-pointer"
+            >
+              <div className="flex items-center gap-4">
+                <div className={`w-14 h-14 bg-gradient-to-br ${shop.gradient} rounded-2xl flex items-center justify-center text-white font-bold text-lg shadow-lg`}>
+                  {shop.name.charAt(0)}
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-1">
+                    <h4 className="font-bold text-slate-800">{shop.name}</h4>
+                    {shop.verified && (
+                      <div className="w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center">
+                        <span className="text-white text-xs">✓</span>
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-1 mb-2">
+                    {Icons.star}
+                    <span className="font-semibold text-sm">{shop.rating}</span>
+                    <span className="text-xs text-slate-600">({shop.reviews} reviews)</span>
+                  </div>
+                  <div className="flex items-center justify-between text-xs text-slate-600">
+                    <span>Specializes in {shop.specializes}</span>
+                    <span>{shop.phones} phones</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Our Offerings Component
+const OurOfferings = () => {
+  const offerings = [
+    {
+      icon: '🔒',
+      title: 'Secure Transactions',
+      description: 'All payments protected with escrow service',
+      color: 'from-green-500 to-emerald-600'
+    },
+    {
+      icon: '🚚',
+      title: 'Safe Delivery',
+      description: 'Nationwide delivery with insurance',
+      color: 'from-blue-500 to-cyan-600'
+    },
+    {
+      icon: '✅',
+      title: 'Phone Verification',
+      description: 'IMEI check & authenticity guarantee',
+      color: 'from-purple-500 to-violet-600'
+    },
+    {
+      icon: '💬',
+      title: '24/7 Support',
+      description: 'Round the clock customer assistance',
+      color: 'from-orange-500 to-red-600'
+    },
+    {
+      icon: '🔄',
+      title: 'Easy Returns',
+      description: '7-day return policy on all purchases',
+      color: 'from-teal-500 to-green-600'
+    },
+    {
+      icon: '📱',
+      title: 'PTA Verification',
+      description: 'Only PTA approved devices listed',
+      color: 'from-indigo-500 to-blue-600'
+    }
+  ];
+
+  return (
+    <div className="bg-white mx-4 rounded-3xl shadow-sm border border-slate-200 overflow-hidden">
+      <div className="p-6 pb-4">
+        <h3 className="text-xl font-bold text-slate-800 mb-1">Our Offerings</h3>
+        <p className="text-sm text-slate-600">Why choose PhoneFlip for your next phone</p>
+      </div>
+      <div className="px-6 pb-6">
+        <div className="grid grid-cols-2 gap-4">
+          {offerings.map((offering, index) => (
+            <div 
+              key={index}
+              className="bg-gradient-to-br from-slate-50 to-slate-100 p-4 rounded-2xl border border-slate-200 hover:shadow-lg transition-all"
+            >
+              <div className={`w-12 h-12 bg-gradient-to-br ${offering.color} rounded-2xl flex items-center justify-center text-white text-xl mb-3 shadow-lg`}>
+                {offering.icon}
+              </div>
+              <h4 className="font-bold text-sm text-slate-800 mb-2">{offering.title}</h4>
+              <p className="text-xs text-slate-600 leading-relaxed">{offering.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // Home Page Component
 const HomePage = ({ phones, onPhoneClick, onCategoryClick }) => {
   return (
@@ -306,6 +546,9 @@ const HomePage = ({ phones, onPhoneClick, onCategoryClick }) => {
         <CategoryGrid onCategoryClick={onCategoryClick} />
       </div>
 
+      {/* Recent Listings */}
+      <RecentListings phones={phones} onPhoneClick={onPhoneClick} />
+
       {/* Featured Phones */}
       <div className="bg-white mx-4 rounded-3xl shadow-sm border border-slate-200 overflow-hidden pb-6">
         <div className="p-6 pb-4">
@@ -318,6 +561,12 @@ const HomePage = ({ phones, onPhoneClick, onCategoryClick }) => {
           ))}
         </div>
       </div>
+
+      {/* Featured Shops */}
+      <FeaturedShops />
+
+      {/* Our Offerings */}
+      <OurOfferings />
     </div>
   );
 };
